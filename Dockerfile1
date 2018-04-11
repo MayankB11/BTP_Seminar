@@ -1,0 +1,22 @@
+# start from base
+FROM ubuntu:14.04
+MAINTAINER Mayank Bhushan <mayankbhusan@iitkgp.ac.in>
+
+# install system-wide deps for python and node
+#RUN export http_proxy=http://172.16.2.30:8080
+#RUN export https_proxy=https://172.16.2.30:8080
+RUN ls /etc/apt/
+#RUN echo "Acquire::http::proxy \"http://172.16.2.30:8080\";\nAcquire::https::proxy \"http://172.16.2.30:8080\";" > /etc/apt/apt.conf
+#RUN cat /etc/apt/apt.conf
+RUN apt-get clean
+RUN apt-get -yqq update
+RUN apt-get -yqq install apache2 git
+#RUN git config --global http.proxy http://172.16.2.30:8080
+#RUN git config --global https.proxy https://172.16.2.30:8080
+RUN cd /var/www/html && git clone https://github.com/Liion/https-github.com-BlackrockDigital-startbootstrap-freelancer.git && mv https-github.com-BlackrockDigital-startbootstrap-freelancer temp
+# expose port
+EXPOSE 443
+EXPOSE 80
+
+# start app
+CMD service apache2 restart
